@@ -1,6 +1,6 @@
 ---
 title: 'Homework #4 - Calculating the SCC'
-author: "Daija Odom"
+author: "Daija Odom and Devon Rossi"
 date: "5/16/2022"
 output:
   html_document: default
@@ -94,7 +94,7 @@ ggplot(data = warming_data) +
 ```
 
 **(3) The difference in damages over time that arrive from pulse**
-```{r, fig.cap = "Figure 4. Difference in damages over years that arise from pulse"}
+```{r, fig.cap = "**Figure 4.** Difference in damages over years that arise from pulse"}
 ## Difference in damages with pulse
 ggplot(data = warming_data) +
   geom_point(aes(x = year, y = difference)) +
@@ -106,7 +106,7 @@ ggplot(data = warming_data) +
 ```
 
 **(4) The difference in damages over time from the pulse per ton of CO_2_ (you can assume that each ton of the pulse causes the same amount of damage)**
-```{r, fig.cap = "Figure 5. Difference in damages per ton of CO2 by year"}
+```{r, fig.cap = "**Figure 5.** Difference in damages per ton of CO2 by year"}
 ## Difference in damages per ton of CO2
 ggplot(data = warming_data) +
   geom_point(aes(x = year, y = damage_per_ton_CO2)) +
@@ -115,5 +115,16 @@ ggplot(data = warming_data) +
        y = "Annual Total Damages ($)") +
   theme_minimal()
 
+```
+
+## Question 3.
+The SCC is the present discounted value of the stream of future  damages caused by one additional ton of CO_2_. The Obama Administration used a discount rate of 3% to discount damages. Recently, New York State used a discount rate of 2%. Calculate and make a plot of the SCC (y-axis) against the discount rate (x-axis) for a reasonable range of discount rates. Explain the intuition for how the discount rate affects the SCC. 
+
+```{r}
+# Calculate 
+
+# make a function of npv
+# use that discount 
+# summing the npv up to 2100 
 ```
 
