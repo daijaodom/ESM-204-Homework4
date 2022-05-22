@@ -2,11 +2,13 @@
 title: 'Homework #4 - Calculating the SCC'
 author: "Daija Odom"
 date: "5/16/2022"
-output: html_document
+output:
+  html_document: default
+  word_document: default
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+```{r setup, include=FALSE, message = FALSE, warning = FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 
 library(tidyverse)
 library(dplyr)
@@ -29,7 +31,7 @@ Using the damages.csv, estimate a quadratic damage function relating the dollar 
 # Create a linear regression model
 damages_data$warming_squared <- damages_data$warming^2
 quad_damage_model <- lm(damages ~ warming + warming_squared+ 0, data = damages_data)
-summary(quad_damage_model)
+# summary(quad_damage_model)
 
 # Define function
 quad_function <- function(warming){
@@ -38,7 +40,7 @@ quad_function <- function(warming){
 }
 ```
 
-```{r, fig.cap = "Figure 1. Total Annual Damages from climate change fitted with quadratic function and zero intercept.}
+```{r, fig.cap = "**Figure 1.** Total Annual Damages from climate change fitted with quadratic function and zero intercept"}
 # Create a function and scatter plot graph for damages. Use geom_smooth to create quadratic fit.
 ggplot(quad_damage_model, aes(warming, damages)) +
   geom_smooth(method = "lm", formula = y ~ x + I(x^2)) +
@@ -68,8 +70,7 @@ warming_data$damage_per_ton_CO2 <-warming_data$difference/35e9
 ```
 
 **(1) Damages over time without the pulse**
-```{r, fig. cap = "Figure 2. Damages overtime with no pulse by year"}
-
+```{r, fig.cap = "**Figure 2.** Damages overtime with no pulse by year"}
 ## Damages without pulse
 ggplot(data = warming_data) +
   geom_point(aes(x = year, y = baseline_damage)) +
@@ -81,8 +82,7 @@ ggplot(data = warming_data) +
 ```
 
 **(2) Damages over time with the pulse**
-```{r, fig. cap = "Figure 3. Damages overtime with pulse by year"}
-
+```{r, fig.cap = "**Figure 3.** Damages overtime with pulse by year"}
 ## Damages with pulse
 ggplot(data = warming_data) +
   geom_point(aes(x = year, y = pulse_damage)) +
@@ -94,8 +94,7 @@ ggplot(data = warming_data) +
 ```
 
 **(3) The difference in damages over time that arrive from pulse**
-```{r, fig.cap = "Figure 4. Difference in damages over years that arise from pulse.}
-
+```{r, fig.cap = "Figure 4. Difference in damages over years that arise from pulse"}
 ## Difference in damages with pulse
 ggplot(data = warming_data) +
   geom_point(aes(x = year, y = difference)) +
@@ -107,8 +106,7 @@ ggplot(data = warming_data) +
 ```
 
 **(4) The difference in damages over time from the pulse per ton of CO_2_ (you can assume that each ton of the pulse causes the same amount of damage)**
-```{r, fig.cap = "Figure 5. "Difference in damages per ton of CO2 by year"}
-
+```{r, fig.cap = "Figure 5. Difference in damages per ton of CO2 by year"}
 ## Difference in damages per ton of CO2
 ggplot(data = warming_data) +
   geom_point(aes(x = year, y = damage_per_ton_CO2)) +
