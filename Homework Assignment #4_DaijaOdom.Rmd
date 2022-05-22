@@ -121,10 +121,28 @@ ggplot(data = warming_data) +
 The SCC is the present discounted value of the stream of future  damages caused by one additional ton of CO_2_. The Obama Administration used a discount rate of 3% to discount damages. Recently, New York State used a discount rate of 2%. Calculate and make a plot of the SCC (y-axis) against the discount rate (x-axis) for a reasonable range of discount rates. Explain the intuition for how the discount rate affects the SCC. 
 
 ```{r}
-# Calculate 
+# Make a function of npv
+npv_function <- function(future_damage, year, rate, reference_year) {
+  output = future_damage/(1+rate/100)^(year-reference_year)
+  return(output)
+}
 
-# make a function of npv
+npv_damages_df <- data.frame(year = warming_data$year) %>% 
+  mutate(damage_per_ton_CO2 = warming_data$damage_per_ton_CO2,
+         discounted_2_percent = npv_function(damage_per_ton_CO2, year, 2, 2022),
+         discounted_3_percent = npv_function(damage_per_ton_CO2, year, 3, 2022),
+         discounted_4_percent = npv_function(damage_per_ton_CO2, year, 4, 2022),
+         discounted_5_percent = npv_function(damage_per_ton_CO2, year, 5, 2022),
+         discounted_6_percent = npv_function(damage_per_ton_CO2, year, 6, 2022),
+         discounted_7_percent = npv_function(damage_per_ton_CO2, year, 7, 2022),
+         discounted_8_percent = npv_function(damage_per_ton_CO2, year, 8, 2022),
+         discounted_9_percent = npv_function(damage_per_ton_CO2, year, 9, 2022),
+         discounted_10_percent = npv_function(damage_per_ton_CO2, year, 10, 2022)) 
+
 # use that discount 
 # summing the npv up to 2100 
+
+
 ```
 
+As the discount rate increases, the net present value (NPV) decreases.
