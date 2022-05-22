@@ -142,6 +142,15 @@ npv_damages_df <- data.frame(year = warming_data$year) %>%
 # use that discount 
 # summing the npv up to 2100 
 
+total_damages_df <- data.frame(rates = c(2:10), total_discount_sum = c(sum(npv_damages_df$discounted_2_percent),
+                                                                       sum(npv_damages_df$discounted_3_percent),
+                                                                       sum(npv_damages_df$discounted_4_percent),
+                                                                       sum(npv_damages_df$discounted_5_percent),
+                                                                       sum(npv_damages_df$discounted_6_percent),
+                                                                       sum(npv_damages_df$discounted_7_percent),
+                                                                       sum(npv_damages_df$discounted_8_percent),
+                                                                       sum(npv_damages_df$discounted_9_percent),
+                                                                       sum(npv_damages_df$discounted_10_percent)))
 
 ```
 
