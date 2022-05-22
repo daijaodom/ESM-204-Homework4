@@ -1,0 +1,85 @@
+---
+title: 'Homework #4 - Calculating the SCC'
+author: "Daija Odom"
+date: "5/16/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+library(dplyr)
+library(janitor)
+library(here)
+library(kableExtra)
+
+```
+
+```{r}
+# Read in the data
+damages_data <- read_csv(here("data","damages.csv"))
+warming_data <- read_csv(here("data", "warming.csv"))
+```
+
+## Question 1. 
+Using the damages.csv, estimate a quadratic damage function relating the dollar value of damages to the change in global mean temperature. Estimate a model with zero intercept because damages by construction must equal zero when there is no climate change. Plot your estimated damage function, overlaid with a scatterplot of the underlying data.
+
+```{r}
+# Create a linear regression model
+damages_data$warming_squared <- damages_data$warming^2
+quad_damage_model <- lm(damages ~ warming + warming_squared+ 0, data = damages_data)
+summary(quad_damage_model)
+
+# Define function
+quad_function <- function(warming){
+  harm <- quad_damage_model$coefficients[1]*warming + quad_damage_model$coefficients[2]*warming^2
+  return(harm)
+}
+```
+
+```{r}
+# Create a function and scatter plot graph for damages. Use geom_smooth to create quadratic fit.
+ggplot(quad_damage_model, aes(warming, damages)) +
+  geom_smooth(method = "lm", formula = y ~ x + I(x^2)) +
+  geom_point() +
+  theme_minimal() +
+  labs(x = "Warming (Degrees C)", y = "Annual Total Damages ($)")
+```
+
+## Question 2.
+Use warming.csv and your estimated damage function to predict damages in each year under the baseline climate and the pulse scenario. Make four plots: 
+
+```{r}
+# Create columns of warming with damages for warming baseline, pulse, the difference between no pulse (warming baseline) and pulse, and the difference in damages per ton CO2.
+
+## Warming baseline
+warming_data$baseline_damage <- quad_function(warming_data$warming_baseline)
+
+## Pulse
+warming_data$pulse_damage <- quad_function(warming_data$warming_pulse)
+
+## Difference
+warming_data$difference <- warming_data$pulse_damage - warming_data$baseline_damage
+
+## Difference in damages per ton
+warming_data$damage_per_ton_CO2 <-warming_data$difference/35e9
+
+```
+
+**(1) Damages over time without the pulse**
+```{r}
+# Plotting above data
+## Damages without pulse
+ggplot(data = warming_data) +
+  geom_point(aes(x = year, y = baseline_damage)) +
+  labs(title = "Baseline", x = "Year", y = "Annual Total Damages ($)", 
+       caption = "Figure 2. Damages overtime with no pulse by year")
+
+```
+
+**(2) Damages over time with the pulse**
+```{r}
+
+```
+
