@@ -38,7 +38,7 @@ quad_function <- function(warming){
 }
 ```
 
-```{r}
+```{r, fig.cap = "Figure 1. Total Annual Damages from climate change fitted with quadratic function and zero intercept.}
 # Create a function and scatter plot graph for damages. Use geom_smooth to create quadratic fit.
 ggplot(quad_damage_model, aes(warming, damages)) +
   geom_smooth(method = "lm", formula = y ~ x + I(x^2)) +
@@ -68,18 +68,54 @@ warming_data$damage_per_ton_CO2 <-warming_data$difference/35e9
 ```
 
 **(1) Damages over time without the pulse**
-```{r}
-# Plotting above data
+```{r, fig. cap = "Figure 2. Damages overtime with no pulse by year"}
+
 ## Damages without pulse
 ggplot(data = warming_data) +
   geom_point(aes(x = year, y = baseline_damage)) +
-  labs(title = "Baseline", x = "Year", y = "Annual Total Damages ($)", 
-       caption = "Figure 2. Damages overtime with no pulse by year")
+  labs(title = "Baseline", 
+       x = "Year", 
+       y = "Annual Total Damages ($)") + 
+  theme_minimal()
 
 ```
 
 **(2) Damages over time with the pulse**
-```{r}
+```{r, fig. cap = "Figure 3. Damages overtime with pulse by year"}
+
+## Damages with pulse
+ggplot(data = warming_data) +
+  geom_point(aes(x = year, y = pulse_damage)) +
+  labs(title = "Pulse Damage", 
+       x = "Year",
+       y = "Annual Total Damages ($)") +
+  theme_minimal()
+
+```
+
+**(3) The difference in damages over time that arrive from pulse**
+```{r, fig.cap = "Figure 4. Difference in damages over years that arise from pulse.}
+
+## Difference in damages with pulse
+ggplot(data = warming_data) +
+  geom_point(aes(x = year, y = difference)) +
+  labs(title = "Difference in Damages", 
+       x = "Year",
+       y = "Annual Total Damages ($)") +
+  theme_minimal()
+
+```
+
+**(4) The difference in damages over time from the pulse per ton of CO_2_ (you can assume that each ton of the pulse causes the same amount of damage)**
+```{r, fig.cap = "Figure 5. "Difference in damages per ton of CO2 by year"}
+
+## Difference in damages per ton of CO2
+ggplot(data = warming_data) +
+  geom_point(aes(x = year, y = damage_per_ton_CO2)) +
+  labs(title = "Difference in Damages per ton CO2", 
+       x = "Year",
+       y = "Annual Total Damages ($)") +
+  theme_minimal()
 
 ```
 
