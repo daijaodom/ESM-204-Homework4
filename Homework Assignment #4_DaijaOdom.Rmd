@@ -5,10 +5,11 @@ date: "5/16/2022"
 output:
   html_document: default
   word_document: default
+  
 ---
 
 ```{r setup, include=FALSE, message = FALSE, warning = FALSE}
-knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 
 library(tidyverse)
 library(dplyr)
@@ -105,7 +106,7 @@ ggplot(data = warming_data) +
 
 ```
 
-**(4) The difference in damages over time from the pulse per ton of CO_2_ (you can assume that each ton of the pulse causes the same amount of damage)**
+**(4) The difference in damages over time from the pulse *per ton of CO_2_* (you can assume that each ton of the pulse causes the same amount of damage)**
 ```{r, fig.cap = "**Figure 5.** Difference in damages per ton of CO2 by year"}
 ## Difference in damages per ton of CO2
 ggplot(data = warming_data) +
@@ -160,7 +161,7 @@ As the discount rate increases, the net present value (NPV) decreases.
 ```{r}
 ggplot(data = total_damages_df) +
   geom_point(aes(x=rates, y=total_discount_sum)) +
-  labs(title = "SCC with Discount Rates from 2-10%",
+  labs(title = "SCC with Discount Rates",
        x = "Discount Rate (%)",
        y = "SCC") +
   theme_minimal() 
@@ -182,9 +183,39 @@ g <- 0.01
 
 ramsey_rule_equation <- (p + n*g)*100
 
-#ramsey rule = 2.1
+#Ramsey rule = 2.1
 
 #plug into previous equation and sum to find SCC
+# x-axis
+ramsey_damages <- npv_function(npv_damages_df$damage_per_ton_CO2, npv_damages_df$year, ramsey_rule_equation, 2022)
 
+# y-axis
+ramsey_discount_damages <- sum(ramsey_damages)
 ```
 
+```{r}
+# Plot the new point (shown in blue)
+ggplot(data = total_damages_df) +
+  geom_point(aes(x=rates, y=total_discount_sum)) +
+  geom_point(x = ramsey_rule_equation, y = ramsey_discount_damages, color = "blue")+
+  labs(title = "SCC with Discount Rates",
+       x = "Discount Rate (%)",
+       y = "SCC") +
+  theme_minimal() 
+```
+
+## Question 5. 
+Now suppose there are two possible climate policies that can be pursued. Policy A is business as usual and Policy B is to take immediate and strong action on climate change. Use these facts:
+
+* If you undertake Policy A there are two possible outcomes. Either warming will occur as in the "baseline" (i.e. "no pulse") dataset above (this happens with probability 0.5) or warming each year will be 1.5 times in the "baseline" dataset (with probability 0.5).
+* Under Policy B, warming will continue until 2050 as in the "baseline" dataset, and then will stabilize at 1.29 degrees and stay that way forever.
+* Society is risk neutral
+* Use a discount rate of 2%
+
+What is the expected present value of damages up to 2100 under Policy A? What is the expected present value of damages up to 2100 under Policy B? Suppose undertaking Policy A costs zero and undertaking Policy B costs X. The total cost of a policy is the implementation cost plus expected damages. Make a plot of total cost of Policy A and total cost of Policy B against X. Suppose Congress wants to undertake the policy with the lower total cost. Use your graph to advise Congress.
+
+
+
+## Question 6. 
+Now suppose that society is risk averse. How do you think this would change your advice to
+Congress?
