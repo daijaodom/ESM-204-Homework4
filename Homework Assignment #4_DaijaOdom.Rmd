@@ -127,6 +127,7 @@ npv_function <- function(future_damage, year, rate, reference_year) {
   return(output)
 }
 
+# Create columns for discount rates of 2%-10%
 npv_damages_df <- data.frame(year = warming_data$year) %>% 
   mutate(damage_per_ton_CO2 = warming_data$damage_per_ton_CO2,
          discounted_2_percent = npv_function(damage_per_ton_CO2, year, 2, 2022),
@@ -139,9 +140,8 @@ npv_damages_df <- data.frame(year = warming_data$year) %>%
          discounted_9_percent = npv_function(damage_per_ton_CO2, year, 9, 2022),
          discounted_10_percent = npv_function(damage_per_ton_CO2, year, 10, 2022)) 
 
-# use that discount 
-# summing the npv up to 2100 
 
+# Create a new data frame (total damages) which sums the individual discount rates from 2% - 10%
 total_damages_df <- data.frame(rates = c(2:10), total_discount_sum = c(sum(npv_damages_df$discounted_2_percent),
                                                                        sum(npv_damages_df$discounted_3_percent),
                                                                        sum(npv_damages_df$discounted_4_percent),
@@ -155,3 +155,36 @@ total_damages_df <- data.frame(rates = c(2:10), total_discount_sum = c(sum(npv_d
 ```
 
 As the discount rate increases, the net present value (NPV) decreases.
+
+## Visualizing the SCC with Discount Rates from 2-10%
+```{r}
+ggplot(data = total_damages_df) +
+  geom_point(aes(x=rates, y=total_discount_sum)) +
+  labs(title = "SCC with Discount Rates from 2-10%",
+       x = "Discount Rate (%)",
+       y = "SCC") +
+  theme_minimal() 
+```
+
+## Question 4.
+The National Academies of Sciences, Engineering, and Medicine advised the government in a
+2017 report to use the Ramsey Rule when discounting within the SCC calculation:
+
+r = ρ + ηg
+
+Using ρ = 0.001, η = 2, and g = 0.01, what is the SCC? 
+
+Locate this point on your graph from above.
+```{r}
+p <- 0.001
+n <- 2
+g <- 0.01
+
+ramsey_rule_equation <- (p + n*g)*100
+
+#ramsey rule = 2.1
+
+#plug into previous equation and sum to find SCC
+
+```
+
