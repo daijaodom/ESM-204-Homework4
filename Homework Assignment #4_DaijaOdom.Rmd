@@ -160,6 +160,7 @@ As the discount rate increases, the net present value (NPV) decreases.
 ```{r}
 ggplot(data = total_damages_df) +
   geom_point(aes(x=rates, y=total_discount_sum)) +
+  geom_smooth(aes(x=rates, y=total_discount_sum)) +
   labs(title = "SCC with Discount Rates from 2-10%",
        x = "Discount Rate (%)",
        y = "SCC") +
@@ -182,7 +183,9 @@ g <- 0.01
 
 ramsey_rule_equation <- (p + n*g)*100
 
-#ramsey rule = 2.1
+#ramsey rule = 2.1%
+
+ramsey_df <- data.frame()
 
 #plug into previous equation and sum to find SCC
 
