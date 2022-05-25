@@ -77,7 +77,7 @@ warming_data$damage_per_ton_CO2 <-warming_data$difference/35e9
 ## Damages without pulse
 ggplot(data = warming_data) +
   geom_point(aes(x = year, y = baseline_damage)) +
-  labs(title = "Baseline", 
+  labs(title = "Baseline Damages with No Pulse", 
        x = "Year", 
        y = "Annual Total Damages ($)") + 
   theme_minimal()
@@ -89,7 +89,7 @@ ggplot(data = warming_data) +
 ## Damages with pulse
 ggplot(data = warming_data) +
   geom_point(aes(x = year, y = pulse_damage)) +
-  labs(title = "Pulse Damage", 
+  labs(title = "Damage with Pulse", 
        x = "Year",
        y = "Annual Total Damages ($)") +
   theme_minimal()
@@ -164,7 +164,7 @@ As the discount rate increases, the net present value (NPV) decreases.
 ggplot(data = total_damages_df) +
   geom_point(aes(x=rates, y=total_discount_sum)) +
   geom_smooth(aes(x=rates, y=total_discount_sum)) +
-  labs(title = "SCC with Discount Rates from 2-10%",
+  labs(title = "SCC with Discount Rates",
        x = "Discount Rate (%)",
        y = "SCC") +
   theme_minimal()
