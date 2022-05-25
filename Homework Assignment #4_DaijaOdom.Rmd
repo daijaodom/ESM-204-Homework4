@@ -3,7 +3,9 @@ title: 'Homework #4 - Calculating the SCC'
 author: "Daija Odom and Devon Rossi"
 date: "5/16/2022"
 output:
-  html_document: default
+  html_document:
+    toc: yes
+    code_folding: show
   word_document: default
   
 ---
@@ -190,7 +192,7 @@ ramsey_rule_equation <- (p + n*g)*100
 ramsey_df <- data.frame()
 
 
-#plug into previous equation and sum to find SCC
+# plug into previous equation and sum to find SCC
 # x-axis
 ramsey_damages <- npv_function(npv_damages_df$damage_per_ton_CO2, npv_damages_df$year, ramsey_rule_equation, 2022)
 
