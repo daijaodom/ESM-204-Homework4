@@ -224,6 +224,11 @@ What is the expected present value of damages up to 2100 under Policy A? What is
 ```{r}
 discount_rate <- 2
 
+warming_policy <- warming_data %>% 
+  mutate(policy_a1 = warming_baseline,
+         policy_a2 = 1.5*warming_baseline,
+         policy_b = warming_baseline)
+
 # PV of damages up to 2100 under Policy A
 
 
