@@ -221,6 +221,14 @@ Now suppose there are two possible climate policies that can be pursued. Policy 
 
 What is the expected present value of damages up to 2100 under Policy A? What is the expected present value of damages up to 2100 under Policy B? Suppose undertaking Policy A costs zero and undertaking Policy B costs X. The total cost of a policy is the implementation cost plus expected damages. Make a plot of total cost of Policy A and total cost of Policy B against X. Suppose Congress wants to undertake the policy with the lower total cost. Use your graph to advise Congress.
 
+```{r}
+discount_rate <- 2
+
+# PV of damages up to 2100 under Policy A
+
+
+# PV of damages up to 2100 under Policy B
+```
 
 
 ## Question 6. 
