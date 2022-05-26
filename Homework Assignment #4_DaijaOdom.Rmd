@@ -235,18 +235,28 @@ warming_policy <- warming_data %>%
   mutate(discount_policy_b = damages_b/(1.02^future_years)) %>% 
   mutate(discount_damages_bau = warming_baseline/1.02^future_years)
 
-#Probability of Policy A and Policy B
-
+#Expected value of damages for policy a and b given probability of 0.5 for policy a and certainty for policy b
 prob_policy_a <- 0.5*sum(warming_policy$discount_policy_a2) + 0.5*sum(warming_policy$discount_damages_bau)
 prob_policy_b <- sum(warming_policy$discount_policy_b)
-  
 
-# PV of damages up to 2100 under Policy A
-
-
-# PV of damages up to 2100 under Policy B
 ```
 
+
+```{r}
+cost <- seq(0, 5e15, by = 1e12)
+
+cost_df <- data.frame(cost)
+
+cost_comparison <- cost_df %>% 
+  mutate(cost_policy_b = prob_policy_b + cost) %>% 
+  mutate(cost_policy_a = prob_policy_a) %>% 
+  mutate(cost_a = cost_policy_a/1e12) %>% 
+  mutate(cost_b = cost_policy_b/1e12)
+```
+
+```{r}
+
+```
 
 ## Question 6. 
 Now suppose that society is risk averse. How do you think this would change your advice to
