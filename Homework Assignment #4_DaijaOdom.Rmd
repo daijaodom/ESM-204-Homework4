@@ -227,7 +227,13 @@ discount_rate <- 2
 warming_policy <- warming_data %>% 
   mutate(policy_a1 = warming_baseline,
          policy_a2 = 1.5*warming_baseline,
-         policy_b = warming_baseline)
+         policy_b = ifelse(year < 2050, policy_a2, 1.29)) %>% 
+  mutate(damages_a = damages_data(policy_a2)) %>% 
+  mutate(damages_b = damages_data(policy_b)) %>% 
+  mutate(future_years = year-2022) %>% 
+  mutate(discount_policy_a2 = damages_a/(1.02^future_years)) %>% 
+  mutate(discount_policy_b = damages_b/(1.02^future_years))
+  
 
 # PV of damages up to 2100 under Policy A
 
