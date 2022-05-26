@@ -255,7 +255,17 @@ cost_comparison <- cost_df %>%
 ```
 
 ```{r}
-
+ggplot(data = cost_comparison) +
+ geom_line(aes(x = cost/1e12, y = cost_policy_a/1e12)) + 
+  geom_line(aes(x = cost/1e12, y = cost_policy_b/1e12)) +
+  theme_minimal() + 
+  labs(x = "Policy Implementation Cost", y = "Total Expected Cost") +
+  geom_text(aes(x = 4000, y = 3200, label = "A"), size = 4) +
+  geom_text(aes(x = 4000, y = 5300, label = "B")) +
+   geom_vline(xintercept = 1000, linetype = "dashed") +
+  geom_text(aes(x = 1000, y = 6000, label = "Use Policy B")) +
+  geom_text(aes(x = 3400, y = 6000, label = "Use Policy A")) +
+  scale_y_continuous(limits = c(0, 6000))
 ```
 
 ## Question 6. 
