@@ -1,6 +1,6 @@
 ---
 title: 'Homework #4 - Calculating the SCC'
-author: "Daija Odom and Devon Rossi"
+author: "Daija Odom and Devon Rossi and Logan Ossentjuk"
 date: "5/16/2022"
 output:
   html_document:
