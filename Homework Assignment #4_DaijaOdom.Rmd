@@ -74,7 +74,7 @@ warming_data$damage_per_ton_CO2 <-warming_data$difference/35e9
 ```
 
 **(1) Damages over time without the pulse**
-```{r, fig.cap = "**Figure 2.** Damages overtime with no pulse by year"}
+```{r}
 ## Damages without pulse
 p1 <- ggplot(data = warming_data) +
   geom_point(aes(x = year, y = baseline_damage), color = "red") +
@@ -86,7 +86,7 @@ p1 <- ggplot(data = warming_data) +
 ```
 
 **(2) Damages over time with the pulse**
-```{r, fig.cap = "**Figure 3.** Damages overtime with pulse by year"}
+```{r}
 ## Damages with pulse
 p2 <- ggplot(data = warming_data) +
   geom_point(aes(x = year, y = pulse_damage), color = 'blue') +
@@ -98,7 +98,7 @@ p2 <- ggplot(data = warming_data) +
 ```
 
 **(3) The difference in damages over time that arrive from pulse**
-```{r, fig.cap = "**Figure 4.** Difference in damages over years that arise from pulse"}
+```{r}
 ## Difference in damages with pulse
 p3 <- ggplot(data = warming_data) +
   geom_point(aes(x = year, y = difference), color = "forestgreen") +
@@ -110,7 +110,7 @@ p3 <- ggplot(data = warming_data) +
 ```
 
 **(4) The difference in damages over time from the pulse *per ton of CO_2_* (you can assume that each ton of the pulse causes the same amount of damage)**
-```{r, fig.cap = "**Figure 5.** Difference in damages per ton of CO2 by year"}
+```{r}
 ## Difference in damages per ton of CO2
 p4 <- ggplot(data = warming_data) +
   geom_point(aes(x = year, y = damage_per_ton_CO2), color = "darkorange") +
@@ -259,7 +259,8 @@ intercept <- prob_policy_a - prob_policy_b
 
 
 ```{r}
-cost_df <- data.frame(seq(0, 5e15, by = 1e12)) %>% 
+cost <- seq(0, 5e15, by = 1e12)
+cost_df <- data.frame(cost) %>% 
   mutate(cost_policy_b = prob_policy_b + cost) %>% 
   mutate(cost_policy_a = prob_policy_a) 
 
@@ -278,13 +279,10 @@ ggplot(data = cost_df) +
   geom_vline(xintercept = intercept/1e12, linetype = "dashed") +
   labs(x = "Cost of Policy Implementation ", y = "Total Expected Cost") +
   theme_minimal() 
- 
-
-
 
 ```
 
-*FIgure 6* Cost of Policy Impmentation versus the Expected Total Cost for Policy A (red) and B (blue). X* represents the intercept and the inflection point where below X*, Policy B is preferred, but above X*, Policy A is preferred. However, unless the implementation costs are greater than X (`r round(intercept)`),  Congress should implement Policy B. 
+*Figure 6* Cost of Policy Impmentation versus the Expected Total Cost for Policy A (red) and B (blue). X* represents the intercept and the inflection point where below X*, Policy B is preferred, but above X*, Policy A is preferred. However, unless the implementation costs are greater than X (`r round(intercept)`),  Congress should implement Policy B. 
 
 
 
