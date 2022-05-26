@@ -31,6 +31,14 @@ warming_data <- read_csv(here("data", "warming.csv"))
 ## Question 1. 
 #### Using the damages.csv, estimate a quadratic damage function relating the dollar value of damages to the change in global mean temperature. Estimate a model with zero intercept because damages by construction must equal zero when there is no climate change. Plot your estimated damage function, overlaid with a scatterplot of the underlying data.
 
+
+#### The following equation is plotted below: 
+
+
+$$ 
+Damages = -1.06 * 10^{12} (warming) + 1.93*10^{13} (warming^2)
+$$
+
 ```{r}
 # Create a linear regression model
 damages_data$warming_squared <- damages_data$warming^2
@@ -44,13 +52,14 @@ quad_function <- function(warming){
 }
 ```
 
-```{r, fig.cap = "**Figure 1.** Total Annual Damages from climate change fitted with quadratic function and zero intercept"}
+```{r, fig.cap = "**Figure 1.** Total Annual Damages ($) from each Degree of Celcious Increase due to climate change fitted with quadratic function and zero intercept"}
 # Create a function and scatter plot graph for damages. Use geom_smooth to create quadratic fit.
 ggplot(quad_damage_model, aes(warming, damages)) +
   geom_smooth(method = "lm", formula = y ~ x + I(x^2)) +
   geom_point() +
   theme_minimal() +
-  labs(x = "Warming (Degrees C)", y = "Annual Total Damages ($)")
+  labs(title = 'Expected Damage From Incremental Warming',x = "Warming (Degrees C)", y = "Annual Total Damages ($)") +
+theme(plot.title = element_text(hjust = 0.5)) 
 ```
 
 ## Question 2.
@@ -120,6 +129,7 @@ all_plots
 ## Question 3.
 #### The SCC is the present discounted value of the stream of future  damages caused by one additional ton of CO_2_. The Obama Administration used a discount rate of 3% to discount damages. Recently, New York State used a discount rate of 2%. Calculate and make a plot of the SCC (y-axis) against the discount rate (x-axis) for a reasonable range of discount rates. Explain the intuition for how the discount rate affects the SCC. 
 
+
 ```{r}
 # Make a function of npv
 npv_function <- function(future_damage, year, rate, reference_year) {
@@ -154,10 +164,10 @@ total_damages_df <- data.frame(rates = c(2:10), total_discount_sum = c(sum(npv_d
 
 ```
 
-#### As the discount rate increases, the net present value (NPV) decreases.
+#### As shown below, as the discount rate increases, the net present value (NPV) decreases non-linearly as exponential decay.  
  
 
-```{r, **Figure 6.** Social Cost of Carbon at Discount Rate}
+```{r, }
 ## Visualizing the SCC with Discount Rates from 2-10%
 ggplot(data = total_damages_df) +
   geom_point(aes(x=rates, y=total_discount_sum)) +
@@ -165,17 +175,25 @@ ggplot(data = total_damages_df) +
   labs(title = "SCC with Discount Rates",
        x = "Discount Rate (%)",
        y = "SCC") +
-  theme_minimal()
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5))
 ```
+
+
+**Figure 3.** Social Cost of Carbon (SCC) versus differing discount rates from 2-10%.
+ 
+
 
 ## Question 4.
 #### The National Academies of Sciences, Engineering, and Medicine advised the government in a 2017 report to use the Ramsey Rule when discounting within the SCC calculation:
 
-#### r = ρ + ηg
 
-#### Using ρ = 0.001, η = 2, and g = 0.01, what is the SCC? 
+$$ 
+r = ρ + ηg
+$$ 
 
-#### Locate this point on your graph from above.
+
+##### Using ρ = 0.001, η = 2, and g = 0.01, the SCC is calculated below and located in red on the graph below 
 
 ```{r}
 p <- 0.001
@@ -213,6 +231,9 @@ ggplot(data = total_damages_df) +
   theme(plot.title = element_text(hjust = 0.5)) 
 ```
 
+**Figure 4.** Social Cost of Carbon (SCC) versus differing discount rates from 2-10%. SCC value found utilizing the Ramsey Rule is displayed in red ($71.35). 
+
+
 ## Question 5. 
 #### Now suppose there are two possible climate policies that can be pursued. Policy A is business as usual and Policy B is to take immediate and strong action on climate change. Use these facts:
 
@@ -222,6 +243,15 @@ ggplot(data = total_damages_df) +
 #### * Use a discount rate of 2%
 
 #### What is the expected present value of damages up to 2100 under Policy A? What is the expected present value of damages up to 2100 under Policy B? Suppose undertaking Policy A costs zero and undertaking Policy B costs X. The total cost of a policy is the implementation cost plus expected damages. Make a plot of total cost of Policy A and total cost of Policy B against X. Suppose Congress wants to undertake the policy with the lower total cost. Use your graph to advise Congress.
+
+
+### Policy A
+
+Expected present value for the business as usual scenario under Policy A up to 2100 were found to be  $2.10*10^{15}$ dollars 
+
+### Policy B 
+
+Expected present value for the immediate action scenario under Policy B up to 2100 were found to be $7.72 *10^{14}$ dollars
 
 ```{r}
 discount_rate <- 2
@@ -239,7 +269,7 @@ warming_policy <- warming_data %>%
 
 #Expected value of damages for policy a and b given probability of 0.5 for policy a and certainty for policy b
 prob_policy_a <- 0.5*sum(warming_policy$discount_policy_a2) + 0.5*sum(warming_policy$discount_damages_bau)
-prob_policy_b <- sum(warming_policy$discount_policy_b)
+prob_policy_b <- c(sum(warming_policy$discount_policy_b))
 
 cost_a <- function(x){prob_policy_a}
 # B adds in the implementation cost (X) 
@@ -269,14 +299,17 @@ ggplot(data = cost_df) +
   geom_text(aes(x = 5100, y = 6000, label = "B")) +
   geom_text(aes(x = 1200, y = 6000, label = "X*")) +
   geom_vline(xintercept = intercept/1e12, linetype = "dashed") +
-  labs(x = "Cost of Policy Implementation ", y = "Total Expected Cost") +
-  theme_minimal() 
-
+  labs(title = "Policy Comparison", x = "Cost of Policy Implementation ", y = "Total Expected Cost") +
+  theme_minimal() + 
+  theme(plot.title = element_text(hjust = 0.5)) 
 ```
 
-**Figure 6** Cost of Policy Impmentation versus the Expected Total Cost for Policy A (red) and B (blue). X* represents the intercept and the inflection point where below X*, Policy B is preferred, but above X*, Policy A is preferred. However, unless the implementation costs are greater than X (`r round(intercept)`),  Congress should implement Policy B. 
+**Figure 5.** Cost of Policy Impmentation versus the Expected Total Cost for Policy A (red) and B (blue). X* represents the intercept and the inflection point where below X*, Policy B is preferred, but above X*, Policy A is preferred. However, unless the implementation costs are greater than X = $1.03 x10^{15}$ dollars,  Congress should implement Policy B. 
 
 
 
 ## Question 6. 
 #### Now suppose that society is risk averse. How do you think this would change your advice to Congress?
+
+
+Given that society is risk averse, the certainty of Policy B is a more likely choice than the uncertainty related with Policy A. Policy A has a chance of reducing overall damages more dramatically than Policy B, however, there is a 50% chance that it will actually result in higher damages. Given this, it is recommended that Congress pursue Policy B, as it will certainly reduce emissions, and it is in line with the risk averse society in which we live. 
