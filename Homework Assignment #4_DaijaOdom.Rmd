@@ -1,11 +1,11 @@
 ---
 title: 'Homework #4 - Calculating the SCC'
-author: "Daija Odom and Devon Rossi and Logan Ossentjuk"
+author: "Daija Odom, Devon Rossi, and Logan Ossentjuk"
 date: "5/16/2022"
 output:
   html_document:
     toc: yes
-    code_folding: show
+    code_folding: hide
   word_document: default
   
 ---
@@ -159,8 +159,9 @@ total_damages_df <- data.frame(rates = c(2:10), total_discount_sum = c(sum(npv_d
 
 As the discount rate increases, the net present value (NPV) decreases.
 
+
+```{r, **Figure 6.** Social Cost of Carbon at Discount Rate}
 ## Visualizing the SCC with Discount Rates from 2-10%
-```{r}
 ggplot(data = total_damages_df) +
   geom_point(aes(x=rates, y=total_discount_sum)) +
   geom_smooth(aes(x=rates, y=total_discount_sum)) +
