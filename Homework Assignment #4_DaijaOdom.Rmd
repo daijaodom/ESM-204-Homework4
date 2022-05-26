@@ -77,7 +77,7 @@ warming_data$damage_per_ton_CO2 <-warming_data$difference/35e9
 ```{r, fig.cap = "**Figure 2.** Damages overtime with no pulse by year"}
 ## Damages without pulse
 p1 <- ggplot(data = warming_data) +
-  geom_point(aes(x = year, y = baseline_damage)) +
+  geom_point(aes(x = year, y = baseline_damage), color = "red") +
   labs(title = "Baseline Damages with No Pulse", 
        x = "Year", 
        y = "Annual Total Damages ($)") + 
@@ -89,7 +89,7 @@ p1 <- ggplot(data = warming_data) +
 ```{r, fig.cap = "**Figure 3.** Damages overtime with pulse by year"}
 ## Damages with pulse
 p2 <- ggplot(data = warming_data) +
-  geom_point(aes(x = year, y = pulse_damage)) +
+  geom_point(aes(x = year, y = pulse_damage), color = 'blue') +
   labs(title = "Damage with Pulse", 
        x = "Year",
        y = "Annual Total Damages ($)") +
@@ -101,7 +101,7 @@ p2 <- ggplot(data = warming_data) +
 ```{r, fig.cap = "**Figure 4.** Difference in damages over years that arise from pulse"}
 ## Difference in damages with pulse
 p3 <- ggplot(data = warming_data) +
-  geom_point(aes(x = year, y = difference)) +
+  geom_point(aes(x = year, y = difference), color = "forestgreen") +
   labs(title = "Difference in Damages", 
        x = "Year",
        y = "Annual Total Damages ($)") +
@@ -113,13 +113,17 @@ p3 <- ggplot(data = warming_data) +
 ```{r, fig.cap = "**Figure 5.** Difference in damages per ton of CO2 by year"}
 ## Difference in damages per ton of CO2
 p4 <- ggplot(data = warming_data) +
-  geom_point(aes(x = year, y = damage_per_ton_CO2)) +
+  geom_point(aes(x = year, y = damage_per_ton_CO2), color = "darkorange") +
   labs(title = "Difference in Damages per ton CO2", 
        x = "Year",
        y = "Annual Total Damages ($)") +
   theme_minimal()
 
+all_plots <- (p1 | p2) / (p3 | p4)
+
+all_plots 
 ```
+*Figure 2* 
 
 ## Question 3.
 The SCC is the present discounted value of the stream of future  damages caused by one additional ton of CO_2_. The Obama Administration used a discount rate of 3% to discount damages. Recently, New York State used a discount rate of 2%. Calculate and make a plot of the SCC (y-axis) against the discount rate (x-axis) for a reasonable range of discount rates. Explain the intuition for how the discount rate affects the SCC. 
@@ -205,12 +209,16 @@ ramsey_discount_damages <- sum(ramsey_damages)
 ```{r}
 # Plot the new point (shown in blue)
 ggplot(data = total_damages_df) +
-  geom_point(aes(x=rates, y=total_discount_sum)) +
-  geom_point(x = ramsey_rule_equation, y = ramsey_discount_damages, color = "blue")+
+  geom_smooth(aes(x=rates, y=total_discount_sum), color = 'black') +
+  geom_point(x = ramsey_rule_equation, y = ramsey_discount_damages, color = "red")+
+  geom_text(aes(x = 4, y = 72, label = "Ramsey Damages = $71.35"), color = "red") +
+  # scale_y_continuous(limits = c(0,70)) +
+  # scale_x_continuous(limits = c(2,10)) +
   labs(title = "SCC with Discount Rates",
        x = "Discount Rate (%)",
        y = "SCC") +
-  theme_minimal() 
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5)) 
 ```
 
 ## Question 5. 
