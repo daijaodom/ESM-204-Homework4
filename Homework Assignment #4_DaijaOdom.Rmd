@@ -29,7 +29,7 @@ warming_data <- read_csv(here("data", "warming.csv"))
 ```
 
 ## Question 1. 
-Using the damages.csv, estimate a quadratic damage function relating the dollar value of damages to the change in global mean temperature. Estimate a model with zero intercept because damages by construction must equal zero when there is no climate change. Plot your estimated damage function, overlaid with a scatterplot of the underlying data.
+#### Using the damages.csv, estimate a quadratic damage function relating the dollar value of damages to the change in global mean temperature. Estimate a model with zero intercept because damages by construction must equal zero when there is no climate change. Plot your estimated damage function, overlaid with a scatterplot of the underlying data.
 
 ```{r}
 # Create a linear regression model
@@ -54,7 +54,7 @@ ggplot(quad_damage_model, aes(warming, damages)) +
 ```
 
 ## Question 2.
-Use warming.csv and your estimated damage function to predict damages in each year under the baseline climate and the pulse scenario. Make four plots: 
+#### Use warming.csv and your estimated damage function to predict damages in each year under the baseline climate and the pulse scenario. Make four plots: 
 
 ```{r}
 # Create columns of warming with damages for warming baseline, pulse, the difference between no pulse (warming baseline) and pulse, and the difference in damages per ton CO2.
@@ -73,60 +73,52 @@ warming_data$damage_per_ton_CO2 <-warming_data$difference/35e9
 
 ```
 
-**(1) Damages over time without the pulse**
+
 ```{r}
-## Damages without pulse
+## (1) Damages over time without the pulse**
 p1 <- ggplot(data = warming_data) +
   geom_point(aes(x = year, y = baseline_damage), color = "red") +
   labs(title = "Baseline Damages with No Pulse", 
        x = "Year", 
        y = "Annual Total Damages ($)") + 
-  theme_minimal()
+  theme_minimal()  +
+  theme(plot.title = element_text(hjust = 0.5)) 
 
-```
-
-**(2) Damages over time with the pulse**
-```{r}
-## Damages with pulse
+## (2) Damages over time with the pulse**
 p2 <- ggplot(data = warming_data) +
   geom_point(aes(x = year, y = pulse_damage), color = 'blue') +
   labs(title = "Damage with Pulse", 
        x = "Year",
        y = "Annual Total Damages ($)") +
-  theme_minimal()
-
-```
-
-**(3) The difference in damages over time that arrive from pulse**
-```{r}
-## Difference in damages with pulse
+  theme_minimal()  +
+  theme(plot.title = element_text(hjust = 0.5)) 
+## (3) The difference in damages over time that arrive from pulse**
 p3 <- ggplot(data = warming_data) +
   geom_point(aes(x = year, y = difference), color = "forestgreen") +
   labs(title = "Difference in Damages", 
        x = "Year",
        y = "Annual Total Damages ($)") +
-  theme_minimal()
-
-```
-
-**(4) The difference in damages over time from the pulse *per ton of CO_2_* (you can assume that each ton of the pulse causes the same amount of damage)**
-```{r}
-## Difference in damages per ton of CO2
+  theme_minimal()  +
+  theme(plot.title = element_text(hjust = 0.5)) 
+## (4) The difference in damages over time from the pulse *per ton of CO_2_* (you can assume that each ton of the pulse causes the same amount of damage)**
 p4 <- ggplot(data = warming_data) +
   geom_point(aes(x = year, y = damage_per_ton_CO2), color = "darkorange") +
   labs(title = "Difference in Damages per ton CO2", 
        x = "Year",
        y = "Annual Total Damages ($)") +
-  theme_minimal()
+  theme_minimal()  +
+  theme(plot.title = element_text(hjust = 0.5)) 
 
 all_plots <- (p1 | p2) / (p3 | p4)
 
 all_plots 
 ```
-*Figure 2* 
+
+
+**Figure 2.** Differing damage results under pulse and no pulse scenarios displaying the Annual Total Damages over Time.
 
 ## Question 3.
-The SCC is the present discounted value of the stream of future  damages caused by one additional ton of CO_2_. The Obama Administration used a discount rate of 3% to discount damages. Recently, New York State used a discount rate of 2%. Calculate and make a plot of the SCC (y-axis) against the discount rate (x-axis) for a reasonable range of discount rates. Explain the intuition for how the discount rate affects the SCC. 
+#### The SCC is the present discounted value of the stream of future  damages caused by one additional ton of CO_2_. The Obama Administration used a discount rate of 3% to discount damages. Recently, New York State used a discount rate of 2%. Calculate and make a plot of the SCC (y-axis) against the discount rate (x-axis) for a reasonable range of discount rates. Explain the intuition for how the discount rate affects the SCC. 
 
 ```{r}
 # Make a function of npv
@@ -162,8 +154,8 @@ total_damages_df <- data.frame(rates = c(2:10), total_discount_sum = c(sum(npv_d
 
 ```
 
-As the discount rate increases, the net present value (NPV) decreases.
-
+#### As the discount rate increases, the net present value (NPV) decreases.
+ 
 
 ```{r, **Figure 6.** Social Cost of Carbon at Discount Rate}
 ## Visualizing the SCC with Discount Rates from 2-10%
@@ -177,14 +169,14 @@ ggplot(data = total_damages_df) +
 ```
 
 ## Question 4.
-The National Academies of Sciences, Engineering, and Medicine advised the government in a
-2017 report to use the Ramsey Rule when discounting within the SCC calculation:
+#### The National Academies of Sciences, Engineering, and Medicine advised the government in a 2017 report to use the Ramsey Rule when discounting within the SCC calculation:
 
-r = ρ + ηg
+#### r = ρ + ηg
 
-Using ρ = 0.001, η = 2, and g = 0.01, what is the SCC? 
+#### Using ρ = 0.001, η = 2, and g = 0.01, what is the SCC? 
 
-Locate this point on your graph from above.
+#### Locate this point on your graph from above.
+
 ```{r}
 p <- 0.001
 n <- 2
@@ -222,14 +214,14 @@ ggplot(data = total_damages_df) +
 ```
 
 ## Question 5. 
-Now suppose there are two possible climate policies that can be pursued. Policy A is business as usual and Policy B is to take immediate and strong action on climate change. Use these facts:
+#### Now suppose there are two possible climate policies that can be pursued. Policy A is business as usual and Policy B is to take immediate and strong action on climate change. Use these facts:
 
-* If you undertake Policy A there are two possible outcomes. Either warming will occur as in the "baseline" (i.e. "no pulse") dataset above (this happens with probability 0.5) or warming each year will be 1.5 times in the "baseline" dataset (with probability 0.5).
-* Under Policy B, warming will continue until 2050 as in the "baseline" dataset, and then will stabilize at 1.29 degrees and stay that way forever.
-* Society is risk neutral
-* Use a discount rate of 2%
+#### * If you undertake Policy A there are two possible outcomes. Either warming will occur as in the "baseline" (i.e. "no pulse") dataset above (this happens with probability 0.5) or warming each year will be 1.5 times in the "baseline" dataset (with probability 0.5).
+#### * Under Policy B, warming will continue until 2050 as in the "baseline" dataset, and then will stabilize at 1.29 degrees and stay that way forever.
+#### * Society is risk neutral
+#### * Use a discount rate of 2%
 
-What is the expected present value of damages up to 2100 under Policy A? What is the expected present value of damages up to 2100 under Policy B? Suppose undertaking Policy A costs zero and undertaking Policy B costs X. The total cost of a policy is the implementation cost plus expected damages. Make a plot of total cost of Policy A and total cost of Policy B against X. Suppose Congress wants to undertake the policy with the lower total cost. Use your graph to advise Congress.
+#### What is the expected present value of damages up to 2100 under Policy A? What is the expected present value of damages up to 2100 under Policy B? Suppose undertaking Policy A costs zero and undertaking Policy B costs X. The total cost of a policy is the implementation cost plus expected damages. Make a plot of total cost of Policy A and total cost of Policy B against X. Suppose Congress wants to undertake the policy with the lower total cost. Use your graph to advise Congress.
 
 ```{r}
 discount_rate <- 2
@@ -282,10 +274,9 @@ ggplot(data = cost_df) +
 
 ```
 
-*Figure 6* Cost of Policy Impmentation versus the Expected Total Cost for Policy A (red) and B (blue). X* represents the intercept and the inflection point where below X*, Policy B is preferred, but above X*, Policy A is preferred. However, unless the implementation costs are greater than X (`r round(intercept)`),  Congress should implement Policy B. 
+**Figure 6** Cost of Policy Impmentation versus the Expected Total Cost for Policy A (red) and B (blue). X* represents the intercept and the inflection point where below X*, Policy B is preferred, but above X*, Policy A is preferred. However, unless the implementation costs are greater than X (`r round(intercept)`),  Congress should implement Policy B. 
 
 
 
 ## Question 6. 
-Now suppose that society is risk averse. How do you think this would change your advice to
-Congress?
+#### Now suppose that society is risk averse. How do you think this would change your advice to Congress?
