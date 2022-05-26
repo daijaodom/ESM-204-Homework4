@@ -304,7 +304,7 @@ ggplot(data = cost_df) +
   theme(plot.title = element_text(hjust = 0.5)) 
 ```
 
-**Figure 5.** Cost of Policy Impmentation versus the Expected Total Cost for Policy A (red) and B (blue). X* represents the intercept and the inflection point where below X*, Policy B is preferred, but above X*, Policy A is preferred. However, unless the implementation costs are greater than X = $1.03 x10^{15}$ dollars,  Congress should implement Policy B. 
+**Figure 5.** Cost of Policy Impmentation versus the Expected Total Cost for Policy A (red) and B (blue). X* represents the intercept and the inflection point where **below X*, Policy B is preferred, but above X, Policy A is preferred**. However, unless the implementation costs are greater than X = $1.03 x10^{15}$ dollars,  Congress should implement Policy B. 
 
 
 
